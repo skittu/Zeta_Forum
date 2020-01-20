@@ -1,9 +1,9 @@
-package com.demigod.Zeta_Forum.Repository;
+package com.demigod.Zeta_Forum.Question;
 
-import com.demigod.Zeta_Forum.Model.Question;
 import org.springframework.data.repository.CrudRepository;
 
 public interface QuestionRepository extends CrudRepository<Question,Long> {
+
 
 
 }

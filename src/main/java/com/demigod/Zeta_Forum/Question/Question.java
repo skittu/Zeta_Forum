@@ -1,4 +1,4 @@
-package com.demigod.Zeta_Forum.Model;
+package com.demigod.Zeta_Forum.Question;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

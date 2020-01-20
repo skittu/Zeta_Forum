@@ -1,7 +1,5 @@
-package com.demigod.Zeta_Forum.Controller;
+package com.demigod.Zeta_Forum.Question;
 
-import com.demigod.Zeta_Forum.Model.Question;
-import com.demigod.Zeta_Forum.Service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +21,13 @@ public class QuestionController {
         questionService.addQue(que);
     }
 
-
     @RequestMapping(value = "/question")
     public List<Question> getAllQuestions()
     {
-
         return questionService.getAllQuestions();
     }
+
+
 
 
 }
