@@ -13,8 +13,9 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public void addQue(Question que)
+    public void addQue(Long uid,Question que)
     {
+        que.setUserId(uid);
         questionRepository.save(que);
     }
 
@@ -23,5 +24,10 @@ public class QuestionService {
         questionRepository.findAll()
                 .forEach(ques::add);
         return ques;
+    }
+
+    public List<Question> getAllQuestionsOfThisUser(Long uid) {
+        List<Question> ques=new ArrayList<>();
+        return questionRepository.findAllByUserId(uid);
     }
 }

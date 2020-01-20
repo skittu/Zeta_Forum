@@ -1,10 +1,7 @@
 package com.demigod.Zeta_Forum.Question;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,10 +12,16 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping(method = RequestMethod.POST,value = "/question")
-    public void addQuestion(@RequestBody Question que)
+    @RequestMapping(method = RequestMethod.POST,value = "/question/{uid}")
+    public void addQuestion(@RequestBody Question que,@PathVariable Long uid)
     {
-        questionService.addQue(que);
+        questionService.addQue(uid,que);
+    }
+
+    @RequestMapping(value = "/question/{uid}")
+    public List<Question> getAllUserQuestions(@PathVariable Long uid)
+    {
+        return questionService.getAllQuestionsOfThisUser(uid);
     }
 
     @RequestMapping(value = "/question")
