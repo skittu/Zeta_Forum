@@ -1,6 +1,7 @@
 package com.demigod.Zeta_Forum.Question;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,32 +22,43 @@ public class QuestionController {
     }
 
     @PutMapping(value = "/question/{questionId}")
-    public String updateQuestion(@RequestBody QuestionPostedFrontend questionBody,@RequestParam String userId,
+    public Question updateQuestion(@RequestBody QuestionPostedFrontend questionBody,@RequestParam String userId,
                                  @PathVariable("questionId") String questionId)
     {
-        questionService.updateQuestion(questionBody,userId,questionId);
-        return "Done";
+        return questionService.updateQuestion(questionBody,userId,questionId);
+
     }
 
 
     @DeleteMapping(value = "/question/{questionId}")
-    public String deleteQuestion(@PathVariable("questionId") String questionId,@RequestParam String userId)
+    public Question deleteQuestion(@PathVariable("questionId") String questionId,@RequestParam String userId)
     {
-        questionService.deleteQuestion(questionId,userId);
-        return "done";
+        return questionService.deleteQuestion(questionId,userId);
+
     }
 
-    @RequestMapping(value = "/question/{uid}")
-    public List<Question> getAllUserQuestions(@PathVariable String userId)
+    @PostMapping(value = "/questions")
+    public Page<Question> getQuestions(@RequestBody QuestionPostedFrontend tags, @RequestParam(defaultValue = "") String userId,
+                                       @RequestParam(defaultValue = "createdOn") String sortBy,
+                                       @RequestParam(defaultValue = "10") Integer pageSize,
+                                       @RequestParam(defaultValue = "0") Integer pageNumber)
     {
-        return questionService.getAllQuestionsOfThisUser(userId);
+
+        return questionService.getAllQuestions(tags.getQuestionTags(),userId,sortBy,pageSize,pageNumber);
+
     }
 
-    @RequestMapping(value = "/question")
-    public List<Question> getAllQuestions()
-    {
-        return questionService.getAllQuestions();
-    }
+//    @RequestMapping(value = "/question/{uid}")
+//    public List<Question> getAllUserQuestions(@PathVariable String userId)
+//    {
+//        return questionService.getAllQuestionsOfThisUser(userId);
+//    }
+//
+//    @RequestMapping(value = "/question")
+//    public List<Question> getAllQuestions()
+//    {
+//        return questionService.getAllQuestions();
+//    }
 
 
 

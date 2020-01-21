@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface TagRepository extends CrudRepository<Tag,TagId> {
 
@@ -11,7 +12,9 @@ public interface TagRepository extends CrudRepository<Tag,TagId> {
     @Transactional
     long deleteByQuestionId(String questionId);
 
-//    public void deleteByQuestionId(String questionId);
-//
-//    void deleteByTagId(TagId tagId);
+    List<Tag> findByTagNameIn(List<String> tags);
+
+
+
+    void deleteByTagId(TagId tagId);
 }

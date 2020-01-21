@@ -1,6 +1,10 @@
 package com.demigod.Zeta_Forum.Question;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,19 +44,47 @@ public class QuestionService {
         return questionToBeInserted;
     }
 
-    public List<Question> getAllQuestions() {
-        List<Question> ques=new ArrayList<>();
-        questionRepository.findAll()
-                .forEach(ques::add);
-        return ques;
+
+    public Page<Question> getAllQuestions(List<String> tags,String userId,String sortBy,Integer pageSize,Integer pageNumber)
+    {
+        System.out.println(pageSize);
+        Pageable page = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy).descending());
+
+        if(tags.isEmpty())
+        {
+
+            if( userId.equals("") )
+            {
+
+                return questionRepository.findAll(page);
+            }
+            else
+            {
+
+                return questionRepository.findAllByUserId(userId, page);
+            }
+        }
+        else
+        {
+            List<Tag> questionsToBeFetched= tagRepository.findByTagNameIn(tags);
+            List<String> listOfQuestionId= questionsToBeFetched.stream().map( t -> t.getQuestionId())
+                    .collect(Collectors.toList());
+            System.out.println(listOfQuestionId.get(0));
+
+            if(userId.equals(""))
+            {
+                return questionRepository.findByQuestionIdIn(listOfQuestionId,page);
+            }
+            else
+            {
+                return questionRepository.findByQuestionIdInAndUserId(listOfQuestionId,userId,page);
+            }
+        }
+
     }
 
-    public List<Question> getAllQuestionsOfThisUser(String userId) {
-        List<Question> ques=new ArrayList<>();
-        return questionRepository.findAllByUserId(userId);
-    }
 
-    public void updateQuestion(QuestionPostedFrontend questionBody, String userId, String questionId) {
+    public Question updateQuestion(QuestionPostedFrontend questionBody, String userId, String questionId) {
 
         // updating question
         Date date = new Date();
@@ -69,11 +101,11 @@ public class QuestionService {
         // adding tags
         addTags(questionBody,questionId);
 
-
+        return questionRepository.findById(questionId).get();
     }
 
 
-    public void deleteQuestion(String questionId, String userId) {
+    public Question deleteQuestion(String questionId, String userId) {
 
         // deleteing questions
             questionRepository.deleteByQuestionId(questionId);
@@ -81,6 +113,7 @@ public class QuestionService {
         // deleting tags
             deleteTags(questionId);
 
+            return questionRepository.findById(questionId).get();
     }
 
     // Tags functions
