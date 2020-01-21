@@ -34,17 +34,18 @@ public class AnswerService {
         return ans;
     }
 
-    public List<Answer> getAllAnswerForQuestion(String questionId,Integer pageNo,Integer pageSize,String sortBy) {
+    public Page<Answer> getAllAnswerForQuestion(String questionId,Integer pageNo,Integer pageSize,String sortBy) {
         //return answerRepository.findAllByQuestionId(questionId);
 
-        Pageable ab = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Pageable ab = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
         Page<Answer> pagedResult=answerRepository.findAllByQuestionId(questionId,ab);
 
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<Answer>();
-        }
+        return pagedResult;
+//        if(pagedResult.hasContent()) {
+//            return pagedResult.getContent();
+//        } else {
+//            return new ArrayList<Answer>();
+//        }
     }
 
     public Answer updateAnswer(Answer answer,String answerId) {
