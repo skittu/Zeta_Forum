@@ -1,6 +1,7 @@
 package com.demigod.Zeta_Forum.Answer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class AnswerController {
     }
 
     @RequestMapping(value = "/answer")
-    public List<Answer> getAllAnswerForQuestion(@RequestParam String questionId ,
+    public Page<Answer> getAllAnswerForQuestion(@RequestParam String questionId ,
                                                 @RequestParam(defaultValue = "0")Integer pageNo,
                                                 @RequestParam(defaultValue = "10") Integer pageSize,
                                                 @RequestParam(defaultValue = "createdOn") String sortBy)

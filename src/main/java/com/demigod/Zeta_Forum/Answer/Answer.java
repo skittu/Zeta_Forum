@@ -1,8 +1,6 @@
 package com.demigod.Zeta_Forum.Answer;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -28,6 +26,24 @@ public class Answer {
     private long updatedOn;
 
 
+    private Long upVote=Long.valueOf(0);
+    private Long downVote=Long.valueOf(0);
+
+    public Long getUpVote() {
+        return upVote;
+    }
+
+    public void setUpVote(Long upVote) {
+        this.upVote = upVote;
+    }
+
+    public Long getDownVote() {
+        return downVote;
+    }
+
+    public void setDownVote(Long downVote) {
+        this.downVote = downVote;
+    }
 
     public String getAnswerId() {
         return answerId;
