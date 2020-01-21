@@ -5,37 +5,44 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 public class Answer {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long aid;
+    private String answerId;
 
     @NotNull
-    private Long qid;
+    private String questionId;
 
     @NotNull
     private String answer;
 
     @NotNull
-    private Long userId;
+    private String userId;
 
-    public Long getAid() {
-        return aid;
+
+    private long createdOn;
+
+    private long updatedOn;
+
+
+
+    public String getAnswerId() {
+        return answerId;
     }
 
-    public void setAid(Long aid) {
-        this.aid = aid;
+    public void setAnswerId(String answerId) {
+        this.answerId = answerId;
     }
 
-    public Long getQid() {
-        return qid;
+    public String getQuestionId() {
+        return questionId;
     }
 
-    public void setQid(Long qid) {
-        this.qid = qid;
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 
     public String getAnswer() {
@@ -46,11 +53,27 @@ public class Answer {
         this.answer = answer;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn.getTime()/1000;
+    }
+
+    public long getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn.getTime()/1000;
     }
 }

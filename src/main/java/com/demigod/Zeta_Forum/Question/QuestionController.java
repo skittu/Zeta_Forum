@@ -13,13 +13,10 @@ public class QuestionController {
     private QuestionService questionService;
 
     @PostMapping(value = "/question")
-    public String addQuestion(@RequestBody QuestionPostedFrontend questionBody,@RequestParam String userId)
+    public Question addQuestion(@RequestBody QuestionPostedFrontend questionBody,@RequestParam String userId)
     {
 
-        questionService.addQuestion(questionBody, userId);
-
-        return "done";
-
+        return questionService.addQuestion(questionBody, userId);
 
     }
 

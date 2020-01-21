@@ -15,15 +15,14 @@ public class QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
-
-    @Autowired
+  
+   @Autowired
     private TagRepository tagRepository;
 
-
-
-    // Question functions
-
-    public void addQuestion(QuestionPostedFrontend que,String userId) {
+   // Question functions
+  
+    public Question addQuestion(QuestionPostedFrontend que,String userId) {
+ 
 
         // storing question in repository
         UUID questionUUID = UUID.randomUUID();
@@ -35,11 +34,10 @@ public class QuestionService {
                 date,
                 userId);
         questionRepository.save(questionToBeInserted);
-
         // storing tags in repository
         addTags(que,questionUUID.toString());
 
-
+        return questionToBeInserted;
     }
 
     public List<Question> getAllQuestions() {
