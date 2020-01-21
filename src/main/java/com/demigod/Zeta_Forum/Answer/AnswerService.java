@@ -42,6 +42,7 @@ public class AnswerService {
 
         return pagedResult;
 //        if(pagedResult.hasContent()) {
+//          System.out.println();
 //            return pagedResult.getContent();
 //        } else {
 //            return new ArrayList<Answer>();
