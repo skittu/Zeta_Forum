@@ -3,6 +3,8 @@ package com.demigod.Zeta_Forum.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AnswerService {
 
@@ -15,4 +17,8 @@ public class AnswerService {
         answerRepository.save(ans);
     }
 
+    public List<Answer> getAllAnswerForQuestion(Long qid) {
+
+        return answerRepository.findAllByQid(qid);
+    }
 }

@@ -15,7 +15,7 @@ public class QuestionController {
     @RequestMapping(method = RequestMethod.POST,value = "/question/{uid}")
     public void addQuestion(@RequestBody Question que,@PathVariable Long uid)
     {
-        questionService.addQue(uid,que);
+        questionService.addQuestions(uid,que);
     }
 
     @RequestMapping(value = "/question/{uid}")

@@ -13,10 +13,11 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public void addQue(Long uid,Question que)
+    public void addQuestions(Long uid,Question que)
     {
         que.setUserId(uid);
         questionRepository.save(que);
+
     }
 
     public List<Question> getAllQuestions() {
