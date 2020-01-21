@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class QuestionService {
@@ -13,10 +15,23 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public void addQuestions(Long uid,Question que)
-    {
-        que.setUserId(uid);
-        questionRepository.save(que);
+    public void addQuestion(QuestionPostedFrontend que,String userId) {
+
+        // storing question in repository
+        UUID questionUUID = UUID.randomUUID();
+        Date date = new Date();
+        Question questionToBeInserted=new Question(
+                questionUUID.toString(),
+                que.getQuestion().toLowerCase(),
+                date,
+                date,
+                userId);
+        questionRepository.save(questionToBeInserted);
+
+        // storing tags in repository
+
+
+
 
     }
 
@@ -27,8 +42,8 @@ public class QuestionService {
         return ques;
     }
 
-    public List<Question> getAllQuestionsOfThisUser(Long uid) {
+    public List<Question> getAllQuestionsOfThisUser(String userId) {
         List<Question> ques=new ArrayList<>();
-        return questionRepository.findAllByUserId(uid);
+        return questionRepository.findAllByUserId(userId);
     }
 }

@@ -12,16 +12,21 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping(method = RequestMethod.POST,value = "/question/{uid}")
-    public void addQuestion(@RequestBody Question que,@PathVariable Long uid)
+    @PostMapping(value = "/question")
+    public String addQuestion(@RequestBody QuestionPostedFrontend questionBody,@RequestParam String userId)
     {
-        questionService.addQuestions(uid,que);
+
+        questionService.addQuestion(questionBody, userId);
+
+        return "done";
+
+
     }
 
     @RequestMapping(value = "/question/{uid}")
-    public List<Question> getAllUserQuestions(@PathVariable Long uid)
+    public List<Question> getAllUserQuestions(@PathVariable String userId)
     {
-        return questionService.getAllQuestionsOfThisUser(uid);
+        return questionService.getAllQuestionsOfThisUser(userId);
     }
 
     @RequestMapping(value = "/question")
