@@ -23,6 +23,22 @@ public class QuestionController {
 
     }
 
+    @PutMapping(value = "/question/{questionId}")
+    public String updateQuestion(@RequestBody QuestionPostedFrontend questionBody,@RequestParam String userId,
+                                 @PathVariable("questionId") String questionId)
+    {
+        questionService.updateQuestion(questionBody,userId,questionId);
+        return "Done";
+    }
+
+
+    @DeleteMapping(value = "/question/{questionId}")
+    public String deleteQuestion(@PathVariable("questionId") String questionId,@RequestParam String userId)
+    {
+        questionService.deleteQuestion(questionId,userId);
+        return "done";
+    }
+
     @RequestMapping(value = "/question/{uid}")
     public List<Question> getAllUserQuestions(@PathVariable String userId)
     {
