@@ -15,7 +15,7 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public void addQuestion(QuestionPostedFrontend que,String userId) {
+    public Question addQuestion(QuestionPostedFrontend que,String userId) {
 
         // storing question in repository
         UUID questionUUID = UUID.randomUUID();
@@ -27,12 +27,11 @@ public class QuestionService {
                 date,
                 userId);
         questionRepository.save(questionToBeInserted);
-
         // storing tags in repository
 
 
 
-
+        return questionToBeInserted;
     }
 
     public List<Question> getAllQuestions() {
