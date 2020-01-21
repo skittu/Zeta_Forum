@@ -9,6 +9,12 @@ import java.util.Date;
 
 @Entity
 public class Question {
+
+
+    private long createdOn;
+
+    private long updatedOn;
+
     @Id
     private String questionId;
 
@@ -18,9 +24,7 @@ public class Question {
     @NotNull
     private String userId;
 
-    private long createdOn;
 
-    private long updatedOn;
 
     public Question()
     {
@@ -36,11 +40,11 @@ public class Question {
         this.questionId=questionId;
     }
 
-    public String getQid() {
+    public String getQuestionId() {
         return questionId;
     }
 
-    public void setQid(String questionId) {
+    public void setQuestionId(String questionId) {
         this.questionId = questionId;
     }
 
