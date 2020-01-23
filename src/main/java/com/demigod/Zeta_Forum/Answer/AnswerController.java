@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins={"http://localhost:8081"})
 @RestController
 public class AnswerController {
 
@@ -19,10 +20,10 @@ public class AnswerController {
     }
 
     @RequestMapping(value = "/answer")
-    public Page<Answer> getAllAnswerForQuestion(@RequestParam String questionId ,
+    public SendFront getAllAnswerForQuestion(@RequestParam String questionId ,
                                                 @RequestParam(defaultValue = "0")Integer pageNo,
                                                 @RequestParam(defaultValue = "10") Integer pageSize,
-                                                @RequestParam(defaultValue = "createdOn") String sortBy)
+                                                @RequestParam(defaultValue = "upVote") String sortBy)
     {
         return answerService.getAllAnswerForQuestion(questionId,pageNo,pageSize,sortBy);
     }

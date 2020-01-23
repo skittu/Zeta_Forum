@@ -8,11 +8,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
+@Transactional
 @Service
 public class AnswerService {
 
@@ -34,13 +35,19 @@ public class AnswerService {
         return ans;
     }
 
-    public Page<Answer> getAllAnswerForQuestion(String questionId,Integer pageNo,Integer pageSize,String sortBy) {
-        //return answerRepository.findAllByQuestionId(questionId);
+    public SendFront getAllAnswerForQuestion(String questionId,Integer pageNo,Integer pageSize,String sortBy) {
 
         Pageable ab = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
         Page<Answer> pagedResult=answerRepository.findAllByQuestionId(questionId,ab);
 
-        return pagedResult;
+        SendFront sTemp=new SendFront();
+
+        sTemp.setTotalPage(pagedResult.getTotalPages());
+        sTemp.setPageNo(pagedResult.getNumber());
+        sTemp.setPageSize(pagedResult.getSize());
+        sTemp.setAnswer(pagedResult.getContent());
+
+        return sTemp;
 //        if(pagedResult.hasContent()) {
 //          System.out.println();
 //            return pagedResult.getContent();
