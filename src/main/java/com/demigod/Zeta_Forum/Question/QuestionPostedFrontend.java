@@ -1,22 +1,14 @@
 package com.demigod.Zeta_Forum.Question;
 
+import javax.persistence.Lob;
 import java.util.List;
 
-public class QuestionPostedFrontend {
+public class QuestionPostedFrontend{
 
-
-
+    @Lob
     private String question;
 
     private List<String> questionTags;
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
 
     public List<String> getQuestionTags() {
 
@@ -27,4 +19,13 @@ public class QuestionPostedFrontend {
 
         this.questionTags = questionTags;
     }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
 }

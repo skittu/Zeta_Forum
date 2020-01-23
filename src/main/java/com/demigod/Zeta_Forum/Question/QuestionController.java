@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = {"http://localhost:8081"})
 @RestController
 public class QuestionController {
 
@@ -37,14 +38,18 @@ public class QuestionController {
 
     }
 
-    @PostMapping(value = "/questions")
-    public Page<Question> getQuestions(@RequestBody QuestionPostedFrontend tags, @RequestParam(defaultValue = "") String userId,
+    @GetMapping(value = "/questions")
+    public ReturnQuestion getQuestions(@RequestParam(defaultValue = "") String searchBy,
+                                       @RequestParam(defaultValue = "") String searchString,
+                                       @RequestParam(defaultValue = "") List<String> questionTags,
+                                       @RequestParam(defaultValue = "") String userId,
                                        @RequestParam(defaultValue = "createdOn") String sortBy,
+                                       @RequestParam(defaultValue = "0") Integer sortOrder,
                                        @RequestParam(defaultValue = "10") Integer pageSize,
                                        @RequestParam(defaultValue = "0") Integer pageNumber)
     {
-
-        return questionService.getAllQuestions(tags.getQuestionTags(),userId,sortBy,pageSize,pageNumber);
+        System.out.println(questionTags.size());
+        return questionService.getAllQuestions(searchBy,searchString,questionTags,userId,sortBy,sortOrder,pageSize,pageNumber);
 
     }
 
