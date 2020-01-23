@@ -1,9 +1,6 @@
 package com.demigod.Zeta_Forum.Question;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -19,11 +16,15 @@ public class Question {
     private String questionId;
 
     @NotNull
+    @Lob
     private String question;
 
     @NotNull
     private String userId;
 
+    private long upvotes=0;
+
+    private long downvotes=0;
 
 
     public Question()
@@ -78,5 +79,21 @@ public class Question {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn.getTime()/1000;
+    }
+
+    public long getUpvotes() {
+        return upvotes;
+    }
+
+    public void setUpvotes(long upvotes) {
+        this.upvotes = upvotes;
+    }
+
+    public long getDownvotes() {
+        return downvotes;
+    }
+
+    public void setDownvotes(long downvotes) {
+        this.downvotes = downvotes;
     }
 }

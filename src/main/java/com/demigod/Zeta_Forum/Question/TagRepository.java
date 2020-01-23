@@ -1,6 +1,7 @@
 package com.demigod.Zeta_Forum.Question;
 
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
@@ -12,8 +13,11 @@ public interface TagRepository extends CrudRepository<Tag,TagId> {
     @Transactional
     long deleteByQuestionId(String questionId);
 
-    List<Tag> findByTagNameIn(List<String> tags);
 
+    List<Tag> findAllByTagName(String tag);
+
+
+    List<Tag> findAllByQuestionId(String questionId);
 
 
 //    void deleteByTagId(TagId tagId);

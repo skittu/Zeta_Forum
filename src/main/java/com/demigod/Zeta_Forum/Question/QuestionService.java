@@ -7,12 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import javax.transaction.Transactional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+
+@Transactional
 @Service
 public class QuestionService {
 
@@ -24,7 +24,10 @@ public class QuestionService {
     private TagRepository tagRepository;
 
    // Question functions
-  
+
+
+
+
     public Question addQuestion(QuestionPostedFrontend que,String userId) {
  
 
@@ -45,41 +48,62 @@ public class QuestionService {
     }
 
 
-    public Page<Question> getAllQuestions(List<String> tags,String userId,String sortBy,Integer pageSize,Integer pageNumber)
+    public ReturnQuestion getAllQuestions(String searchBy,String searchString,List<String> tags,String userId,String sortBy,Integer searchOrder,Integer pageSize,Integer pageNumber)
     {
-        System.out.println(pageSize);
-        Pageable page = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy).descending());
 
-        if(tags.isEmpty())
+        Pageable page = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy).descending());
+        System.out.println(searchBy);
+        if(searchBy.equals("Text"))
         {
 
-            if( userId.equals("") )
-            {
+            // Need to be changed for search string
+            return buildList(questionRepository.findAll(page));
 
-                return questionRepository.findAll(page);
+        }
+        else if(searchBy.equals("Tag"))
+        {
+            System.out.println(tags.size());
+            List<Tag> questionsToBeFetched= tagRepository.findAllByTagName(tags.get(0));
+            List<String> listOfQuestionId= questionsToBeFetched.stream().map( t -> t.getQuestionId())
+                    .collect(Collectors.toList());
+
+            for(int i=1;i<tags.size();i++)
+            {
+                List<Tag> tempFetch= tagRepository.findAllByTagName(tags.get(i));
+                List<String> tempId= tempFetch.stream().map( t -> t.getQuestionId())
+                        .collect(Collectors.toList());
+                Set<String> result = tempId.stream()
+                        .distinct()
+                        .filter(listOfQuestionId::contains)
+                        .collect(Collectors.toSet());
+                listOfQuestionId= convertSetToList(result);
+            }
+
+            if(userId.equals(""))
+            {
+                return  buildList(questionRepository.findByQuestionIdIn(listOfQuestionId,page));
+
             }
             else
             {
-
-                return questionRepository.findAllByUserId(userId, page);
+                return buildList(questionRepository.findByQuestionIdInAndUserId(listOfQuestionId,userId,page));
             }
         }
         else
         {
-            List<Tag> questionsToBeFetched= tagRepository.findByTagNameIn(tags);
-            List<String> listOfQuestionId= questionsToBeFetched.stream().map( t -> t.getQuestionId())
-                    .collect(Collectors.toList());
-            System.out.println(listOfQuestionId.get(0));
-
-            if(userId.equals(""))
+            if( userId.equals("") )
             {
-                return questionRepository.findByQuestionIdIn(listOfQuestionId,page);
+
+                return buildList(questionRepository.findAll(page));
+
             }
             else
             {
-                return questionRepository.findByQuestionIdInAndUserId(listOfQuestionId,userId,page);
+
+                return buildList(questionRepository.findAllByUserId(userId, page));
             }
         }
+
 
     }
 
@@ -130,5 +154,43 @@ public class QuestionService {
         long recordsDeleted = tagRepository.deleteByQuestionId(questionId);
     }
 
+    public List<String> getTags(String questionId)
+    {
+
+        return tagRepository.findAllByQuestionId(questionId).stream().map(t -> t.getTagName()).collect(Collectors.toList());
+
+    }
+
+
+    public static <T> List<T> convertSetToList(Set<T> set)
+    {
+        // create an empty list
+        List<T> list = new ArrayList<>();
+
+        // push each element in the set into the list
+        for (T t : set)
+            list.add(t);
+
+        // return the list
+        return list;
+    }
+
+    public ReturnQuestion buildList(Page<Question> page)
+    {
+
+        ReturnQuestion returnQuestion = new ReturnQuestion();
+        returnQuestion.setNumberOfElements((long)page.getNumberOfElements());
+        returnQuestion.setTotalElements(page.getTotalElements());
+        returnQuestion.setTotalPages((long)page.getTotalPages());
+        returnQuestion.setQuestions(page.getContent());
+        List<List<String> > tags = new ArrayList<>();
+
+        for(int i=0;i<page.getContent().size();i++)
+        {
+            tags.add(getTags(page.getContent().get(i).getQuestionId()));
+        }
+        returnQuestion.setTags(tags);
+        return returnQuestion;
+    }
 
 }
