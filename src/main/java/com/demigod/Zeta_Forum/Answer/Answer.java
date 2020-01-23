@@ -2,6 +2,7 @@ package com.demigod.Zeta_Forum.Answer;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ public class Answer {
     @NotNull
     private String questionId;
 
+    @Lob
     @NotNull
     private String answer;
 
