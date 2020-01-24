@@ -1,5 +1,7 @@
 package com.demigod.Zeta_Forum.Vote;
 
+import com.demigod.Zeta_Forum.Answer.Answer;
+import com.demigod.Zeta_Forum.Question.Question;
 import com.demigod.Zeta_Forum.Question.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,17 +15,17 @@ public class VoteController {
     private VoteService voteService;
 
     @PostMapping(value = "/voteQuestion")
-    public void questionVote(@RequestParam String userId,@RequestParam String questionId,@RequestParam Integer vote)
+    public Question questionVote(@RequestParam String userId, @RequestParam String questionId, @RequestParam Integer vote)
     {
-        System.out.println("adsda");
-            voteService.questionService(userId,questionId,vote);
+
+            return voteService.voteQuestion(userId,questionId,vote);
     }
 
     @PostMapping(value = "/voteAnswer")
-    public void answerVote(@RequestParam String userId,@RequestParam String answerId,@RequestParam Integer vote)
+    public Answer answerVote(@RequestParam String userId, @RequestParam String answerId, @RequestParam Integer vote)
     {
-        System.out.println("adsda");
-        voteService.answerService(userId,answerId,vote);
+
+        return voteService.voteAnswer(userId,answerId,vote);
     }
 
 }

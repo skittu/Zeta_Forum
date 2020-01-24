@@ -7,16 +7,17 @@ import java.util.List;
 
 public class ReturnQuestion{
 
-    private Long totalPages;
+    private long totalPages;
 
-    private Long totalElements;
+    private long totalElements;
 
-    private Long numberOfElements;
+    private long numberOfElements;
 
     private List<Question> questions=null;
 
-    private List<List<String> >  tags;
+    private List<List<String> >  tags=null;
 
+    private List<Long> userVotes=null;
 
     public List<Question> getQuestions() {
         return questions;
@@ -34,27 +35,27 @@ public class ReturnQuestion{
         this.tags = tags;
     }
 
-    public Long getTotalPages() {
+    public long getTotalPages() {
         return totalPages;
     }
 
-    public void setTotalPages(Long totalPages) {
+    public void setTotalPages(long totalPages) {
         this.totalPages = totalPages;
     }
 
-    public Long getTotalElements() {
+    public long getTotalElements() {
         return totalElements;
     }
 
-    public void setTotalElements(Long totalElements) {
+    public void setTotalElements(long totalElements) {
         this.totalElements = totalElements;
     }
 
-    public Long getNumberOfElements() {
+    public long getNumberOfElements() {
         return numberOfElements;
     }
 
-    public void setNumberOfElements(Long numberOfElements) {
+    public void setNumberOfElements(long numberOfElements) {
         this.numberOfElements = numberOfElements;
     }
 }

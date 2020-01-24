@@ -41,6 +41,7 @@ public class QuestionService {
                 date,
                 userId);
         questionRepository.save(questionToBeInserted);
+
         // storing tags in repository
         addTags(que,questionUUID.toString());
 
@@ -113,31 +114,39 @@ public class QuestionService {
         // updating question
         Date date = new Date();
         Question questionToBeUpdated =  questionRepository.findById(questionId).get();
-        questionToBeUpdated.setQuestion(questionBody.getQuestion());
-        questionToBeUpdated.setUpdatedOn(date);
-        questionRepository.save(questionToBeUpdated);
 
+            questionToBeUpdated.setQuestion(questionBody.getQuestion());
+            questionToBeUpdated.setUpdatedOn(date);
+            questionRepository.save(questionToBeUpdated);
 
-        //deleting tags
-        deleteTags(questionId);
+            //deleting tags
+            deleteTags(questionId);
 
+            // adding tags
+            addTags(questionBody, questionId);
 
-        // adding tags
-        addTags(questionBody,questionId);
+            return questionRepository.findById(questionId).get();
 
-        return questionRepository.findById(questionId).get();
     }
 
 
-    public Question deleteQuestion(String questionId, String userId) {
+    public String deleteQuestion(String questionId, String userId) {
+
+        try {
 
         // deleteing questions
-            questionRepository.deleteByQuestionId(questionId);
+        questionRepository.deleteByQuestionId(questionId);
 
         // deleting tags
-            deleteTags(questionId);
+        deleteTags(questionId);
 
-            return questionRepository.findById(questionId).get();
+        return "Successfully deleted";
+        }
+        catch(Exception e)
+        {
+            return "Some error occurred";
+        }
+
     }
 
     // Tags functions
@@ -179,9 +188,9 @@ public class QuestionService {
     {
 
         ReturnQuestion returnQuestion = new ReturnQuestion();
-        returnQuestion.setNumberOfElements((long)page.getNumberOfElements());
+        returnQuestion.setNumberOfElements(page.getNumberOfElements());
         returnQuestion.setTotalElements(page.getTotalElements());
-        returnQuestion.setTotalPages((long)page.getTotalPages());
+        returnQuestion.setTotalPages(page.getTotalPages());
         returnQuestion.setQuestions(page.getContent());
         List<List<String> > tags = new ArrayList<>();
 
@@ -190,6 +199,9 @@ public class QuestionService {
             tags.add(getTags(page.getContent().get(i).getQuestionId()));
         }
         returnQuestion.setTags(tags);
+
+
+
         return returnQuestion;
     }
 

@@ -27,25 +27,10 @@ public class Answer {
 
     private long updatedOn;
 
+    private long upVote=0;
 
-    private Long upVote=Long.valueOf(0);
-    private Long downVote=Long.valueOf(0);
+    private long downVote=0;
 
-    public Long getUpVote() {
-        return upVote;
-    }
-
-    public void setUpVote(Long upVote) {
-        this.upVote = upVote;
-    }
-
-    public Long getDownVote() {
-        return downVote;
-    }
-
-    public void setDownVote(Long downVote) {
-        this.downVote = downVote;
-    }
 
     public String getAnswerId() {
         return answerId;
@@ -94,4 +79,21 @@ public class Answer {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn.getTime()/1000;
     }
+
+    public long getUpVote() {
+        return upVote;
+    }
+
+    public void setUpVote(long upVote) {
+        this.upVote = upVote;
+    }
+
+    public long getDownVote() {
+        return downVote;
+    }
+
+    public void setDownVote(long downVote) {
+        this.downVote = downVote;
+    }
 }
+

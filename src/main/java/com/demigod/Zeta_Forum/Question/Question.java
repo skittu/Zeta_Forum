@@ -22,9 +22,9 @@ public class Question {
     @NotNull
     private String userId;
 
-    private long upvotes=0;
+    private long upVote=0;
 
-    private long downvotes=0;
+    private long downVote=0;
 
 
     public Question()
@@ -81,19 +81,19 @@ public class Question {
         this.updatedOn = updatedOn.getTime()/1000;
     }
 
-    public long getUpvotes() {
-        return upvotes;
+    public long getUpVote() {
+        return upVote;
     }
 
-    public void setUpvotes(long upvotes) {
-        this.upvotes = upvotes;
+    public void setUpVote(long upVote) {
+        this.upVote = upVote;
     }
 
-    public long getDownvotes() {
-        return downvotes;
+    public long getDownVote() {
+        return downVote;
     }
 
-    public void setDownvotes(long downvotes) {
-        this.downvotes = downvotes;
+    public void setDownVote(long downVote) {
+        this.downVote = downVote;
     }
 }
