@@ -20,13 +20,13 @@ public class VoteAnswer {
     private String answerId;
 
     @NotNull
-    private long vote;
+    private Integer vote;
 
     public VoteAnswer()
     {
 
     }
-    public VoteAnswer(String userId,String answerId,long vote)
+    public VoteAnswer(String userId,String answerId,Integer vote)
     {
         this.answerId=answerId;
         this.userId=userId;
@@ -41,11 +41,11 @@ public class VoteAnswer {
         this.userId = userId;
     }
 
-    public long getVote() {
+    public Integer getVote() {
         return vote;
     }
 
-    public void setVote(long vote) {
+    public void setVote(Integer vote) {
         this.vote = vote;
     }
 

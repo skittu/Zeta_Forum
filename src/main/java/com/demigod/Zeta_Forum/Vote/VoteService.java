@@ -8,6 +8,7 @@ import com.demigod.Zeta_Forum.Question.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 @Service
@@ -26,56 +27,101 @@ public class VoteService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public void answerService(String userId, String answerId, long vote)
+    public Answer voteAnswer (String userId, String answerId, Integer vote)
     {
 
-       if(voteAnswerRepository.findById(new VoteAnswerId(userId,answerId)).isEmpty())
-       {
-           voteAnswerRepository.save(new VoteAnswer(userId,answerId,vote));
-           if(vote==1)
-           {
+        System.out.println("Vote Answer Service got it");
 
-           }
-           else
-           {
+        VoteAnswer vA = null;
+        try {
+            vA=voteAnswerRepository.findById(new VoteAnswerId(userId, answerId)).get();
+        }
+        catch (Exception e)
+        {
+            vA=null;
+        }
 
-           }
-       }
-       else
-       {
-           VoteAnswer voteAnswer = voteAnswerRepository.findById(new VoteAnswerId(userId,answerId)).get();
-           voteAnswer.setVote(vote);
-           voteAnswerRepository.save(voteAnswer);
 
-           if(vote==1)
-           {
+        Answer a = answerRepository.findById(answerId).get();
 
-           }
-           else
-           {
+        if(vA==null || vA.getVote()==0)
+        {
+            voteAnswerRepository.save(new VoteAnswer(userId,answerId,vote));
 
-           }
-       }
+            if(vote==1)
+            {
+                a.setUpVote(a.getUpVote()+1);
+            }
+            else
+            {
+                a.setDownVote(a.getDownVote()+1);
+            }
+            answerRepository.save(a);
+
+        }
+        else
+        {
+
+
+            if(vote==1 && vA.getVote()==1)
+            {
+                voteAnswerRepository.save(new VoteAnswer(userId,answerId,0));
+                a.setUpVote(a.getUpVote()-1);
+
+            }
+            else if(vote==2 && vA.getVote()==1)
+            {
+                voteAnswerRepository.save(new VoteAnswer(userId,answerId,2));
+                a.setUpVote(a.getUpVote()-1);
+                a.setDownVote(a.getDownVote()+1);
+            }
+            else if(vote==1 && vA.getVote()==2)
+            {
+                voteAnswerRepository.save(new VoteAnswer(userId,answerId,1));
+                a.setUpVote(a.getUpVote()+1);
+                a.setDownVote(a.getDownVote()-1);
+
+            }
+            else
+            {
+                voteAnswerRepository.save(new VoteAnswer(userId,answerId,0));
+                a.setDownVote(a.getDownVote()-1);
+
+            }
+
+            answerRepository.save(a);
+        }
+        return answerRepository.findById(answerId).get();
 
     }
 
 
-    public void questionService(String userId, String questionId, long vote)
+    public Question voteQuestion(String userId, String questionId, Integer vote)
     {
-        Optional<VoteQuestion>  vQ= voteQuestionRepository.findById(new VoteQuestionId(userId,questionId));
+        System.out.println("Vote Question Service got it");
+        VoteQuestion vQ = null;
+        try {
+            vQ=voteQuestionRepository.findById(new VoteQuestionId(userId, questionId)).get();
+        }
+        catch (Exception e)
+        {
+            vQ=null;
+        }
+
+
         Question q = questionRepository.findById(questionId).get();
 
-        if(vQ.isEmpty() || vQ.get().getVote()==(long)0)
+        if(vQ==null || vQ.getVote()==0)
         {
             voteQuestionRepository.save(new VoteQuestion(userId,questionId,vote));
 
-            if(vote==(long)1)
+            if(vote==1)
             {
-                q.setUpvotes(q.getUpvotes()+1);
+                q.setUpVote(q.getUpVote()+1);
             }
             else
             {
-                q.setDownvotes(q.getDownvotes()+1);
+                q.setDownVote(q.getDownVote()+1);
             }
             questionRepository.save(q);
 
@@ -84,24 +130,47 @@ public class VoteService {
         {
 
 
-            if(vote==(long)1 && vQ.get().getVote()==(long)1)
+            if(vote==1 && vQ.getVote()==1)
             {
                 voteQuestionRepository.save(new VoteQuestion(userId,questionId,0));
+                q.setUpVote(q.getUpVote()-1);
 
             }
-            else if(vote==(long)2 && vQ.get().getVote()==(long)1)
+            else if(vote==2 && vQ.getVote()==1)
             {
-
+                voteQuestionRepository.save(new VoteQuestion(userId,questionId,2));
+                q.setUpVote(q.getUpVote()-1);
+                q.setDownVote(q.getDownVote()+1);
             }
-            else if(vote==(long)1 && vQ.get().getVote()==(long)2)
+            else if(vote==1 && vQ.getVote()==2)
             {
+                voteQuestionRepository.save(new VoteQuestion(userId,questionId,1));
+                q.setUpVote(q.getUpVote()+1);
+                q.setDownVote(q.getDownVote()-1);
 
             }
             else
             {
                 voteQuestionRepository.save(new VoteQuestion(userId,questionId,0));
+                q.setDownVote(q.getDownVote()-1);
+
             }
+
+            questionRepository.save(q);
         }
+        return questionRepository.findById(questionId).get();
+    }
+
+
+    // Not tested yet
+
+    public VoteQuestion getQuestionVote(String questionId,String userId)
+    {
+        return voteQuestionRepository.findById(new VoteQuestionId(userId,questionId)).get();
+    }
+    public VoteAnswer getAnswerVote(String answerId,String userId)
+    {
+        return voteAnswerRepository.findById(new VoteAnswerId(userId,answerId)).get();
     }
 
 }

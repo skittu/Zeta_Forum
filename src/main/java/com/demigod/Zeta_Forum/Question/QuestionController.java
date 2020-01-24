@@ -32,7 +32,7 @@ public class QuestionController {
 
 
     @DeleteMapping(value = "/question/{questionId}")
-    public Question deleteQuestion(@PathVariable("questionId") String questionId,@RequestParam String userId)
+    public String deleteQuestion(@PathVariable("questionId") String questionId,@RequestParam String userId)
     {
         return questionService.deleteQuestion(questionId,userId);
 
