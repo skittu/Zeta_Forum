@@ -99,8 +99,8 @@ public class QuestionService {
             }
             else
             {
-
                 return buildList(questionRepository.findAllByUserId(userId, page));
+
             }
         }
 
