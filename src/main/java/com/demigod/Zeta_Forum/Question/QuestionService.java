@@ -49,6 +49,66 @@ public class QuestionService {
     }
 
 
+//    public ReturnQuestion getAllQuestions(String searchBy,String searchString,List<String> tags,String userId,String sortBy,Integer searchOrder,Integer pageSize,Integer pageNumber)
+//    {
+//
+//        Pageable page = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy).descending());
+//        System.out.println(searchBy);
+//        if(searchBy.equals("Text"))
+//        {
+//
+//            // Need to be changed for search string
+//            return buildList(questionRepository.findAll(page));
+//
+//        }
+//        else if(searchBy.equals("Tag"))
+//        {
+//            System.out.println(tags.size());
+//            List<Tag> questionsToBeFetched= tagRepository.findAllByTagName(tags.get(0));
+//            List<String> listOfQuestionId= questionsToBeFetched.stream().map( t -> t.getQuestionId())
+//                    .collect(Collectors.toList());
+//
+//            for(int i=1;i<tags.size();i++)
+//            {
+//                List<Tag> tempFetch= tagRepository.findAllByTagName(tags.get(i));
+//                List<String> tempId= tempFetch.stream().map( t -> t.getQuestionId())
+//                        .collect(Collectors.toList());
+//                Set<String> result = tempId.stream()
+//                        .distinct()
+//                        .filter(listOfQuestionId::contains)
+//                        .collect(Collectors.toSet());
+//                listOfQuestionId= convertSetToList(result);
+//            }
+//
+//            if(userId.equals(""))
+//            {
+//                return  buildList(questionRepository.findByQuestionIdIn(listOfQuestionId,page));
+//
+//            }
+//            else
+//            {
+//                return buildList(questionRepository.findByQuestionIdInAndUserId(listOfQuestionId,userId,page));
+//            }
+//        }
+//        else
+//        {
+//            if( userId.equals("") )
+//            {
+//
+//                return buildList(questionRepository.findAll(page));
+//
+//            }
+//            else
+//            {
+//
+//                return buildList(questionRepository.findAllByUserId(userId, page));
+//            }
+//        }
+//
+//
+//    }
+
+
     public ReturnQuestion getAllQuestions(String searchBy,String searchString,List<String> tags,String userId,String sortBy,Integer searchOrder,Integer pageSize,Integer pageNumber)
     {
 
@@ -63,22 +123,9 @@ public class QuestionService {
         }
         else if(searchBy.equals("Tag"))
         {
-            System.out.println(tags.size());
-            List<Tag> questionsToBeFetched= tagRepository.findAllByTagName(tags.get(0));
-            List<String> listOfQuestionId= questionsToBeFetched.stream().map( t -> t.getQuestionId())
-                    .collect(Collectors.toList());
 
-            for(int i=1;i<tags.size();i++)
-            {
-                List<Tag> tempFetch= tagRepository.findAllByTagName(tags.get(i));
-                List<String> tempId= tempFetch.stream().map( t -> t.getQuestionId())
-                        .collect(Collectors.toList());
-                Set<String> result = tempId.stream()
-                        .distinct()
-                        .filter(listOfQuestionId::contains)
-                        .collect(Collectors.toSet());
-                listOfQuestionId= convertSetToList(result);
-            }
+            List<String> listOfQuestionId= tagRepository.findQuestionId(tags,tags.size());
+
 
             if(userId.equals(""))
             {
@@ -171,19 +218,6 @@ public class QuestionService {
     }
 
 
-    public static <T> List<T> convertSetToList(Set<T> set)
-    {
-        // create an empty list
-        List<T> list = new ArrayList<>();
-
-        // push each element in the set into the list
-        for (T t : set)
-            list.add(t);
-
-        // return the list
-        return list;
-    }
-
     public ReturnQuestion buildList(Page<Question> page)
     {
 
@@ -204,5 +238,20 @@ public class QuestionService {
 
         return returnQuestion;
     }
+
+
+
+    //    public static <T> List<T> convertSetToList(Set<T> set)
+//    {
+//        // create an empty list
+//        List<T> list = new ArrayList<>();
+//
+//        // push each element in the set into the list
+//        for (T t : set)
+//            list.add(t);
+//
+//        // return the list
+//        return list;
+//    }
 
 }
