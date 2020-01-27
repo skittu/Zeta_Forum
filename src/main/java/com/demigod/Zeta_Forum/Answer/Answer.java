@@ -1,8 +1,11 @@
 package com.demigod.Zeta_Forum.Answer;
 
+import com.demigod.Zeta_Forum.Question.Question;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -40,13 +43,6 @@ public class Answer {
         this.answerId = answerId;
     }
 
-    public String getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(String questionId) {
-        this.questionId = questionId;
-    }
 
     public String getAnswer() {
         return answer;
@@ -94,6 +90,14 @@ public class Answer {
 
     public void setDownVote(long downVote) {
         this.downVote = downVote;
+    }
+
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 }
 
