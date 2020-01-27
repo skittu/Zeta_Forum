@@ -1,5 +1,8 @@
 package com.demigod.Zeta_Forum.Question;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -10,13 +13,13 @@ public class Question {
 
     private long createdOn;
 
+
     private long updatedOn;
 
     @Id
     private String questionId;
 
     @NotNull
-    @Lob
     private String question;
 
     @NotNull
@@ -36,9 +39,9 @@ public class Question {
     {
         this.userId=userId;
         this.question=question;
-        this.updatedOn=updatedOn.getTime()/1000;
-        this.createdOn=createdOn.getTime()/1000;
         this.questionId=questionId;
+        this.createdOn=createdOn.getTime();
+        this.updatedOn=updatedOn.getTime();
     }
 
     public String getQuestionId() {
@@ -65,21 +68,6 @@ public class Question {
         this.userId = userId;
     }
 
-    public long getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn.getTime()/1000;
-    }
-
-    public long getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn.getTime()/1000;
-    }
 
     public long getUpVote() {
         return upVote;
@@ -95,5 +83,21 @@ public class Question {
 
     public void setDownVote(long downVote) {
         this.downVote = downVote;
+    }
+
+    public long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn.getTime();
+    }
+
+    public long getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn.getTime();
     }
 }
