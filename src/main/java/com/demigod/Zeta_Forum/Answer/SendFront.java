@@ -6,7 +6,7 @@ public class SendFront {
 
     private int pageNo;
     private int pageSize;
-    private int totalPage;
+    private Long totalItems;
     private List<Answer> answer;
 
     public int getPageNo() {
@@ -25,12 +25,12 @@ public class SendFront {
         this.pageSize = pageSize;
     }
 
-    public int getTotalPage() {
-        return totalPage;
+    public Long getTotalItems() {
+        return totalItems;
     }
 
-    public void setTotalPage(int totalPage) {
-        this.totalPage = totalPage;
+    public void setTotalItems(Long totalItems) {
+        this.totalItems = totalItems;
     }
 
     public List<Answer> getAnswer() {

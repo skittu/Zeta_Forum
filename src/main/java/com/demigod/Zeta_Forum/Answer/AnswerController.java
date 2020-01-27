@@ -21,11 +21,11 @@ public class AnswerController {
 
     @RequestMapping(value = "/answer")
     public SendFront getAllAnswerForQuestion(@RequestParam String questionId ,
-                                                @RequestParam(defaultValue = "0")Integer pageNo,
+                                                @RequestParam(defaultValue = "0")Integer pageNumber,
                                                 @RequestParam(defaultValue = "10") Integer pageSize,
                                                 @RequestParam(defaultValue = "upVote") String sortBy)
     {
-        return answerService.getAllAnswerForQuestion(questionId,pageNo,pageSize,sortBy);
+        return answerService.getAllAnswerForQuestion(questionId,pageNumber,pageSize,sortBy);
     }
 
     @RequestMapping(method = RequestMethod.PUT,value = "/answer/{answerId}")

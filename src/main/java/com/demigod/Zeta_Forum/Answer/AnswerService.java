@@ -35,17 +35,18 @@ public class AnswerService {
         return ans;
     }
 
-    public SendFront getAllAnswerForQuestion(String questionId,Integer pageNo,Integer pageSize,String sortBy) {
+    public SendFront getAllAnswerForQuestion(String questionId,Integer pageNumber,Integer pageSize,String sortBy) {
 
-        Pageable ab = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+        Pageable ab = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
         Page<Answer> pagedResult=answerRepository.findAllByQuestionId(questionId,ab);
 
         SendFront sTemp=new SendFront();
 
-        sTemp.setTotalPage(pagedResult.getTotalPages());
         sTemp.setPageNo(pagedResult.getNumber());
+        sTemp.setTotalItems(pagedResult.getTotalElements());
         sTemp.setPageSize(pagedResult.getSize());
         sTemp.setAnswer(pagedResult.getContent());
+
 
         return sTemp;
 //        if(pagedResult.hasContent()) {
