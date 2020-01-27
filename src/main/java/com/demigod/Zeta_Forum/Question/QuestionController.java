@@ -30,7 +30,6 @@ public class QuestionController {
 
     }
 
-
     @DeleteMapping(value = "/question/{questionId}")
     public String deleteQuestion(@PathVariable("questionId") String questionId,@RequestParam String userId)
     {
