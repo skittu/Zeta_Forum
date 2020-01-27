@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = {"*"})
@@ -46,24 +47,12 @@ public class QuestionController {
                                        @RequestParam(defaultValue = "createdOn") String sortBy,
                                        @RequestParam(defaultValue = "0") Integer sortOrder,
                                        @RequestParam(defaultValue = "10") Integer pageSize,
-                                       @RequestParam(defaultValue = "0") Integer pageNumber)
+                                       @RequestParam(defaultValue = "0") Integer pageNumber) throws IOException
     {
-        System.out.println(questionTags.size());
+
         return questionService.getAllQuestions(searchBy,searchString,questionTags,userId,sortBy,sortOrder,pageSize,pageNumber);
 
     }
-
-//    @RequestMapping(value = "/question/{uid}")
-//    public List<Question> getAllUserQuestions(@PathVariable String userId)
-//    {
-//        return questionService.getAllQuestionsOfThisUser(userId);
-//    }
-//
-//    @RequestMapping(value = "/question")
-//    public List<Question> getAllQuestions()
-//    {
-//        return questionService.getAllQuestions();
-//    }
 
 
 
