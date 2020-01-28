@@ -1,6 +1,10 @@
 package com.demigod.Zeta_Forum.Question;
 
+
 import com.demigod.Zeta_Forum.Answer.Answer;
+
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,7 +13,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -38,8 +48,7 @@ public class QuestionService {
         Question questionToBeInserted=new Question(
                 questionUUID.toString(),
                 que.getQuestion().toLowerCase(),
-                date,
-                date,
+                date,date,
                 userId);
         questionRepository.save(questionToBeInserted);
 
@@ -50,107 +59,56 @@ public class QuestionService {
     }
 
 
-//    public ReturnQuestion getAllQuestions(String searchBy,String searchString,List<String> tags,String userId,String sortBy,Integer searchOrder,Integer pageSize,Integer pageNumber)
-//    {
-//
-//        Pageable page = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy).descending());
-//        System.out.println(searchBy);
-//        if(searchBy.equals("Text"))
-//        {
-//
-//            // Need to be changed for search string
-//            return buildList(questionRepository.findAll(page));
-//
-//        }
-//        else if(searchBy.equals("Tag"))
-//        {
-//            System.out.println(tags.size());
-//            List<Tag> questionsToBeFetched= tagRepository.findAllByTagName(tags.get(0));
-//            List<String> listOfQuestionId= questionsToBeFetched.stream().map( t -> t.getQuestionId())
-//                    .collect(Collectors.toList());
-//
-//            for(int i=1;i<tags.size();i++)
-//            {
-//                List<Tag> tempFetch= tagRepository.findAllByTagName(tags.get(i));
-//                List<String> tempId= tempFetch.stream().map( t -> t.getQuestionId())
-//                        .collect(Collectors.toList());
-//                Set<String> result = tempId.stream()
-//                        .distinct()
-//                        .filter(listOfQuestionId::contains)
-//                        .collect(Collectors.toSet());
-//                listOfQuestionId= convertSetToList(result);
-//            }
-//
-//            if(userId.equals(""))
-//            {
-//                return  buildList(questionRepository.findByQuestionIdIn(listOfQuestionId,page));
-//
-//            }
-//            else
-//            {
-//                return buildList(questionRepository.findByQuestionIdInAndUserId(listOfQuestionId,userId,page));
-//            }
-//        }
-//        else
-//        {
-//            if( userId.equals("") )
-//            {
-//
-//                return buildList(questionRepository.findAll(page));
-//
-//            }
-//            else
-//            {
-//
-//                return buildList(questionRepository.findAllByUserId(userId, page));
-//            }
-//        }
-//
-//
-//    }
 
 
-    public ReturnQuestion getAllQuestions(String searchBy,String searchString,List<String> tags,String userId,String sortBy,Integer searchOrder,Integer pageSize,Integer pageNumber)
-    {
+    public ReturnQuestion getAllQuestions(String searchBy,String searchString,List<String> tags,String userId,String sortBy,Integer searchOrder,Integer pageSize,Integer pageNumber) throws IOException {
 
         Pageable page = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy).descending());
         System.out.println(searchBy);
         if(searchBy.equals("Text"))
         {
+            System.out.println(searchString);
 
-            // Need to be changed for search string
-            return buildList(questionRepository.findAll(page));
+            Pattern p = Pattern.compile("\\b(he|she|the|...)\\b\\s?");
+            Matcher m = p.matcher(searchString);
+            String s = m.replaceAll(" ");
 
+            System.out.println(s);
+
+            s.replaceAll("[^a-zA-Z0-9 ]","");
+            String[] temp = s.split(" ");
+            String finalString="";
+            for(int i=0;i<temp.length-1;i++)
+            {
+                finalString +=temp[i];
+                finalString+=" | ";
+            }
+            finalString += temp[temp.length-1];
+
+            System.out.println(finalString);
+            List<String> l=questionRepository.SearchQuestion(finalString);
+
+            return buildList(questionRepository.findByQuestionIdIn(l,page));
         }
         else if(searchBy.equals("Tag"))
         {
 
             List<String> listOfQuestionId= tagRepository.findQuestionId(tags,tags.size());
 
-
-            if(userId.equals(""))
-            {
                 return  buildList(questionRepository.findByQuestionIdIn(listOfQuestionId,page));
 
-            }
-            else
-            {
-                return buildList(questionRepository.findByQuestionIdInAndUserId(listOfQuestionId,userId,page));
-            }
+        }
+        else if(searchBy.equals("Author"))
+        {
+
+            return buildList(questionRepository.findAllByUserId(userId, page));
+
         }
         else
         {
-            if( userId.equals("") )
-            {
 
                 return buildList(questionRepository.findAll(page));
 
-            }
-            else
-            {
-                return buildList(questionRepository.findAllByUserId(userId, page));
-
-            }
         }
 
 
@@ -240,22 +198,15 @@ public class QuestionService {
         return returnQuestion;
     }
 
+
     public Optional<Question> getSingleQuestion(String questionId) {
         return questionRepository.findById(questionId);
     }
+  public List<String> loadstop() throws IOException
+    {
+        List<String> stopwrods = Files.readAllLines(Paths.get("english_stopwords.txt"));
+        for(int i=0;i<10;i++)
+            System.out.println(stopwrods.get(i));
+        return stopwrods;
 
-
-    //    public static <T> List<T> convertSetToList(Set<T> set)
-//    {
-//        // create an empty list
-//        List<T> list = new ArrayList<>();
-//
-//        // push each element in the set into the list
-//        for (T t : set)
-//            list.add(t);
-//
-//        // return the list
-//        return list;
-//    }
-
-}
+    }
