@@ -64,27 +64,31 @@ public class QuestionService {
         if(searchBy.equals("Text"))
         {
             System.out.println(searchString);
+            String s="";
+            try {
+                Pattern p = Pattern.compile("\\b(he|she|the|...)\\b\\s?");
+                Matcher m = p.matcher(searchString);
+                s = m.replaceAll(" ");
 
-            Pattern p = Pattern.compile("\\b(he|she|the|...)\\b\\s?");
-            Matcher m = p.matcher(searchString);
-            String s = m.replaceAll(" ");
 
-            System.out.println(s);
+                s.replaceAll("[^a-zA-Z0-9 ]", "");
+                String[] temp = s.split(" ");
+                String finalString = "";
+                for (int i = 0; i < temp.length - 1; i++) {
+                    finalString += temp[i];
+                    finalString += " | ";
+                }
+                finalString += temp[temp.length - 1];
 
-            s.replaceAll("[^a-zA-Z0-9 ]","");
-            String[] temp = s.split(" ");
-            String finalString="";
-            for(int i=0;i<temp.length-1;i++)
-            {
-                finalString +=temp[i];
-                finalString+=" | ";
+                System.out.println(finalString);
+                List<String> l = questionRepository.SearchQuestion(finalString);
+
+                return buildList(questionRepository.findByQuestionIdIn(l, page));
             }
-            finalString += temp[temp.length-1];
-
-            System.out.println(finalString);
-            List<String> l=questionRepository.SearchQuestion(finalString);
-
-            return buildList(questionRepository.findByQuestionIdIn(l,page));
+            catch (Exception e)
+            {
+                return new ReturnQuestion();
+            }
         }
         else if(searchBy.equals("Tag"))
         {

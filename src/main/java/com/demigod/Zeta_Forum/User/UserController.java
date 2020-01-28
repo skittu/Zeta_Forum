@@ -1,5 +1,6 @@
 package com.demigod.Zeta_Forum.User;
 
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +12,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/User/Registration")
-    public String Register(@RequestBody Theuser user)
+    @PostMapping(value = "/User/Registration")
+    public UserReturn Register(@RequestBody Theuser user)
     {
     return userService.createAccount(user);
+    }
+
+    @RequestMapping(value="/User/Login")
+    public UserReturn Login(@RequestBody Theuser user)
+    {
+        return userService.Login(user);
     }
 
     @DeleteMapping(value = "/User/Delete")
