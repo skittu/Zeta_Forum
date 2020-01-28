@@ -1,6 +1,10 @@
 package com.demigod.Zeta_Forum.Question;
 
+
+import com.demigod.Zeta_Forum.Answer.Answer;
+
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -194,14 +198,15 @@ public class QuestionService {
         return returnQuestion;
     }
 
-    public List<String> loadstop() throws IOException
+
+    public Optional<Question> getSingleQuestion(String questionId) {
+        return questionRepository.findById(questionId);
+    }
+  public List<String> loadstop() throws IOException
     {
         List<String> stopwrods = Files.readAllLines(Paths.get("english_stopwords.txt"));
         for(int i=0;i<10;i++)
             System.out.println(stopwrods.get(i));
         return stopwrods;
+
     }
-
-
-
-}
