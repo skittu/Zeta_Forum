@@ -1,5 +1,6 @@
 package com.demigod.Zeta_Forum.Question;
 
+import com.demigod.Zeta_Forum.Answer.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -239,6 +240,9 @@ public class QuestionService {
         return returnQuestion;
     }
 
+    public Optional<Question> getSingleQuestion(String questionId) {
+        return questionRepository.findById(questionId);
+    }
 
 
     //    public static <T> List<T> convertSetToList(Set<T> set)

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins={"*"})
 @RestController
@@ -26,6 +27,13 @@ public class AnswerController {
                                                 @RequestParam(defaultValue = "upVote") String sortBy)
     {
         return answerService.getAllAnswerForQuestion(questionId,pageNumber,pageSize,sortBy);
+    }
+
+
+    @RequestMapping(value = "/getsingleanswer")
+    public Optional<Answer> getsingleanswer(@RequestParam String answerId)
+    {
+        return answerService.getSingleAnswer(answerId);
     }
 
     @RequestMapping(method = RequestMethod.PUT,value = "/answer/{answerId}")

@@ -1,10 +1,12 @@
 package com.demigod.Zeta_Forum.Question;
 
+import com.demigod.Zeta_Forum.Answer.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = {"*"})
 @RestController
@@ -50,6 +52,13 @@ public class QuestionController {
         System.out.println(questionTags.size());
         return questionService.getAllQuestions(searchBy,searchString,questionTags,userId,sortBy,sortOrder,pageSize,pageNumber);
 
+    }
+
+
+    @RequestMapping(value = "/getsinglequestion")
+    public Optional<Question> getsinglequestionr(@RequestParam String questionId)
+    {
+        return questionService.getSingleQuestion(questionId);
     }
 
 //    @RequestMapping(value = "/question/{uid}")
