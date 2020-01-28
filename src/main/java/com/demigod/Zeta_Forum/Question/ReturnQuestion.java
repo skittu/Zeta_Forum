@@ -19,6 +19,8 @@ public class ReturnQuestion{
 
     private List<Long> userVotes=null;
 
+    private List<String> userName;
+
     public List<Question> getQuestions() {
         return questions;
     }
@@ -57,5 +59,13 @@ public class ReturnQuestion{
 
     public void setNumberOfElements(long numberOfElements) {
         this.numberOfElements = numberOfElements;
+    }
+
+    public List<String> getUserName() {
+        return userName;
+    }
+
+    public void setUserName(List<String> userName) {
+        this.userName = userName;
     }
 }
