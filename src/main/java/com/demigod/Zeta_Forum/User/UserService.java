@@ -1,5 +1,6 @@
 package com.demigod.Zeta_Forum.User;
 
+import com.demigod.Zeta_Forum.Question.ReturnQuestion;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,29 +15,36 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public String createAccount(Theuser user)
+    public UserReturn createAccount(Theuser user)
     {
-
+    System.out.println(user.getUserName());
     user.setUserId(UUID.randomUUID().toString());
-
+    UserReturn u=new UserReturn();
     try {
         userRepository.save(user);
     }
     catch(DataIntegrityViolationException e) {
         System.out.println(e);
-        return "Username or email already exists";
+
+        u.setMsg("User already exist");
+        return u;
     }
     catch (ConstraintViolationException e)
     {
         System.out.println(e);
-        return "Username or email already exist";
+        u.setMsg("User already exist");
+        return u;
     }
     catch (Exception e )
     {
         System.out.println("some error occurred");
-        return "some error occurred";
+        u.setMsg("some error occurred");
+        return u;
     }
-        return "User Created Successfully";
+    UserReturn createdUser=new UserReturn(userRepository.findById(user.getUserId()).get());
+    createdUser.setMsg("1");
+    createdUser.setPassword("");
+        return createdUser;
     }
 
 
@@ -97,5 +105,33 @@ public class UserService {
 
         return "abcd";
 
+    }
+
+    public UserReturn Login(Theuser user) {
+        Theuser u;
+        UserReturn r =new UserReturn();
+        try
+        {
+
+            if(user.getUserName()!=null && user.getUserName().length()>0)
+            u = userRepository.findByUserName(user.getUserName());
+            else{
+                u=userRepository.findByEmail(user.getEmail());
+            }
+            if(u.getPassword().equals(user.getPassword()))
+            {
+                UserReturn ru= new UserReturn(u);
+                ru.setPassword("");
+                ru.setMsg("1");
+                return ru;
+            }
+        }
+        catch (Exception e)
+        {
+            r.setMsg("User does not exist, Please Sign up first");
+            return r;
+        }
+        r.setMsg("Password is wrong");
+        return r;
     }
 }

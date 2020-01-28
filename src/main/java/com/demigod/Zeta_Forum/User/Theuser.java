@@ -40,11 +40,12 @@ public class Theuser {
 
         }
 
-    public Theuser(String name, String userName, String password, String email) {
-//        this.name = name;
-//        this.userName = userName;
+    public Theuser(String name, String userName, String password, String email,String userId) {
+        this.name = name;
+        this.userName = userName;
         this.password = password;
         this.email = email;
+        this.userId=userId;
     }
 
     public String getUserName() {

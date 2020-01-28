@@ -65,7 +65,7 @@ public class Answer {
     }
 
     public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn.getTime()/1000;
+        this.createdOn = createdOn.getTime();
     }
 
     public long getUpdatedOn() {
@@ -73,7 +73,7 @@ public class Answer {
     }
 
     public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn.getTime()/1000;
+        this.updatedOn = updatedOn.getTime();
     }
 
     public long getUpVote() {
